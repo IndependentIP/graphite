@@ -3,8 +3,6 @@
 # Attributes:: default
 #
 
-include_attribute 'apache2'
-
 default['graphite']['version'] = '0.9.12'
 default['graphite']['twisted_version'] = '11.1'
 default['graphite']['password'] = 'change_me'
@@ -82,8 +80,15 @@ default['graphite']['graph_templates'] = [
 
 case node['graphite']['web_server']
 when 'apache'
+  include_attribute 'apache2'
+
   default['graphite']['user_account'] = node['apache']['user']
   default['graphite']['group_account'] = node['apache']['group']
+when 'nginx'
+  include_attribute 'nginx'
+
+  default['graphite']['user_account'] = node['nginx']['user']
+  default['graphite']['group_account'] = node['nginx']['group']
 when 'uwsgi'
   default['graphite']['user_account'] = 'graphite'
   default['graphite']['group_account'] = 'graphite'
