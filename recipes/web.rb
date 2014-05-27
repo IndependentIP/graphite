@@ -73,6 +73,7 @@ template "#{docroot}/graphite/local_settings.py" do
   source 'local_settings.py.erb'
   mode 00755
   variables(:timezone => node['graphite']['timezone'],
+            :secret_key => node['graphite']['secret_key'],
             :debug => node['graphite']['web']['debug'],
             :base_dir => node['graphite']['base_dir'],
             :doc_root => node['graphite']['doc_root'],
@@ -102,14 +103,14 @@ template "#{basedir}/bin/set_admin_passwd.py" do
   mode 00755
 end
 
-cookbook_file "#{storagedir}/graphite.db" do
-  action :create_if_missing
-  notifies :run, 'execute[set admin password]'
-end
-
 execute 'set admin password' do
   command "#{basedir}/bin/set_admin_passwd.py root #{password}"
   action :nothing
+end
+
+cookbook_file "#{storagedir}/graphite.db" do
+  action :create_if_missing
+  notifies :run, 'execute[set admin password]'
 end
 
 # This is not done in the cookbook_file above to avoid triggering a password set on permissions changes
