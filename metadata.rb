@@ -16,10 +16,11 @@ supports 'oracle'
 supports 'fedora'
 
 depends  'python'
-depends  'apache2'
 depends  'runit', '~> 1.0'
 depends  'memcached'
 
+suggests 'apache2'
+suggests 'nginx'
 suggests 'systemd'
 suggests 'graphiti'
 suggests 'delayed_evaluator'
