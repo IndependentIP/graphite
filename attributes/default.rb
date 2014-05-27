@@ -60,6 +60,7 @@ default['graphite']['web']['email']['PORT'] = '25'
 default['graphite']['web']['email']['HOST_USER'] = ''
 default['graphite']['web']['email']['HOST_PASSWORD'] = ''
 default['graphite']['web']['email']['USE_TLS'] = false
+default['graphite']['secret_key'] = 'change_me'
 default['graphite']['web_server'] = 'apache'
 default['graphite']['create_user'] = false
 
