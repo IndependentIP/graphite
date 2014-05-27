@@ -1,0 +1,25 @@
+server {
+  listen <%= node['graphite']['listen_port'] %> deferred;
+  <% unless node['graphite']['url_aliases'].empty? %>
+    server_name <%= [node['graphite']['url_aliases']].flatten.compact.join(" ") %>;
+  <% end %>
+
+  charset       utf-8;
+  access_log    <%= node['graphite']['storage_dir'] %>/log/webapp/access.log;
+  error_log     <%= node['graphite']['storage_dir'] %>/log/webapp/error.log;
+
+  root          <%= node['graphite']['doc_root'] %>;
+
+  location /media/ {
+    alias <%= node['graphite']['django_root'] %>/contrib/admin/media/;
+  }
+
+  location /content {
+    alias <%= node['graphite']['doc_root'] %>/content;
+  }
+
+  location / {
+    include uwsgi_params;
+    uwsgi_pass unix:<%= node['graphite']['uwsgi']['socket'] %>;
+  }
+}

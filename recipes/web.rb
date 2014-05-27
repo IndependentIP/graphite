@@ -123,4 +123,5 @@ if node['graphite']['web_server'] == 'apache'
   include_recipe 'graphite::apache'
 else
   include_recipe 'graphite::uwsgi'
+  include_recipe 'graphite::nginx' if node['graphite']['web_server'] == 'nginx'
 end
