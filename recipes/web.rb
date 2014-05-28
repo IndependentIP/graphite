@@ -107,7 +107,7 @@ end
 execute "hack secret_key" do
   user "root"
   cwd "#{docroot}/graphite"
-  command "echo 'SECRET_KEY = \'#{node['graphite']['secret_key']}\'' >> app_settings.py"
+  command 'echo "SECRET_KEY = \'' << node['graphite']['secret_key'] << '\'" >> app_settings.py'
   action :nothing
   notifies :run, 'execute[set admin password]'
 end
