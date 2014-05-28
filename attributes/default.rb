@@ -5,9 +5,8 @@
 
 default['graphite']['version'] = '0.9.12'
 default['graphite']['twisted_version'] = '11.1'
-default['graphite']['python_memcached_version'] = "1.53"
-default['graphite']['python_django_version'] = "1.5"
-default['graphite']['python_django_tagging_version'] = "0.3.2"
+default['graphite']['django_version'] = "1.5"
+default['graphite']['django_tagging_version'] = "0.3.2"
 default['graphite']['password'] = 'change_me'
 default['graphite']['chef_role'] = 'graphite'
 default['graphite']['url'] = 'graphite'
