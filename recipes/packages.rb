@@ -48,7 +48,9 @@ dep_packages = case node['platform_family']
                end
 
 dep_packages.each do |pkg|
+  key = pkg.gsub('-', '_')
   package pkg do
+    version node['graphite']["#{key}_version"] if node['graphite']["#{key}_version"]
     action :install
   end
 end
