@@ -19,7 +19,7 @@
 
 dep_packages = case node['platform_family']
                when 'debian'
-                 packages = %w{ python-cairo-dev python-django python-django-tagging python-rrdtool }
+                 packages = %w{ python-cairo-dev python-rrdtool }
 
                  # Optionally include memcached client
                  if node['graphite']['web']['memcached_hosts'].length > 0
@@ -28,7 +28,7 @@ dep_packages = case node['platform_family']
 
                  packages
                when 'rhel', 'fedora'
-                 packages = %w{ Django django-tagging pycairo-devel python-devel mod_wsgi python-sqlite2 python-zope-interface }
+                 packages = %w{ pycairo-devel python-devel mod_wsgi python-sqlite2 python-zope-interface }
 
                  # Include bitmap packages (optionally)
                  if node['graphite']['web']['bitmap_support']
@@ -48,8 +48,14 @@ dep_packages = case node['platform_family']
                end
 
 dep_packages.each do |pkg|
-  key = pkg.gsub('-', '_')
   package pkg do
+    action :install
+  end
+end
+
+%w(django django-tagging).each do |package|
+  key = package.gsub('-', '_')
+  python_pip package do
     version node['graphite']["#{key}_version"] if node['graphite']["#{key}_version"]
     action :install
   end
