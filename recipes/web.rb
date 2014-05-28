@@ -103,6 +103,15 @@ template "#{basedir}/bin/set_admin_passwd.py" do
   mode 00755
 end
 
+# TODO: HACK
+execute "hack secret_key" do
+  user "root"
+  cwd "#{docroot}/graphite"
+  command "echo 'SECRET_KEY = '#{node['graphite']['secret_key']}' >> app_settings.py"
+  action :nothing
+  notifies :run, 'execute[set admin password]'
+end
+
 execute 'set admin password' do
   command "#{basedir}/bin/set_admin_passwd.py root #{password}"
   action :nothing
@@ -110,7 +119,7 @@ end
 
 cookbook_file "#{storagedir}/graphite.db" do
   action :create_if_missing
-  notifies :run, 'execute[set admin password]'
+  notifies :run, 'execute[hack secret_key]'
 end
 
 # This is not done in the cookbook_file above to avoid triggering a password set on permissions changes
